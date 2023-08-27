@@ -1,0 +1,11 @@
+name: MythItem
+version: '${project.version}'
+main: net.danh.mythitem.MythItem
+api-version: '1.13'
+depend: [ MMOItems, MythicMobs ]
+authors: [ VoChiDanh ]
+description: ${project.description}
+commands:
+  mythitem:
+    description: MythItem Commands
+    aliases: [ myi, mys ]

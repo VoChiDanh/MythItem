@@ -1,0 +1,231 @@
+# Debug logs for testing / Default false
+debug: false
+# Prefix for message
+prefix: "&7[&fMythItem&7]"
+# Item's setting load
+load_settings:
+  # Not recommend turn this on. Use /mythitem create when server started
+  # After use that command, please don't edit anything in mmoitems's file or mythicmob's files until plugin say it done
+  # Recommend load it when don't have so much player in server / or have 0 player is the best
+  load_all_mob_on_enable: false
+# Plugin will take a mob's stats to load item for that mob. So if you want some mob needn't has weapon & armor
+# Put internal mob name below this list
+list_mobs_unload:
+  - MOB_NAME
+# Maybe every message will be here
+message:
+  reload: "&aReloaded files"
+  starting_load: "&bStarted load all items | This can take a few minutes if you have so many mobs"
+  loading_done: "&aLoaded all items"
+  help:
+    admin:
+      - "&a/myi reload - Reload file"
+      - "&a/myi create - Generator Items from MythicMobs Stats"
+# Generate settings
+type:
+  # MMOItems custom type
+  # We have known issue with this: This type will never show to /mi browse
+  # But you can open that gui by command /mi browse MYTHICSWORD
+  mythicsword:
+    # Recommend keep all things below generator_custom_type
+    # You can change MythicSword to your new custom type name
+    # It just custom load type for generate item
+    generator_custom_type:
+      enable: true
+      display: DIAMOND_SWORD
+      name: MythicSword
+      parent: SWORD
+      unident-item:
+        name: "&f#prefix#Unidentified MythicSword"
+        lore:
+          - '&7This item is unidentified. I must'
+          - '&7find a way to identify it!'
+          - '{tier}'
+          - '{tier}&8Item Info:'
+          - '{range}&8- &7Lvl Range: &e#range#'
+          - '{tier}&8- &7Item Tier: #prefix##tier#'
+    # Random level to load item
+    # For example: We will load sword for that mobs
+    # We will load from 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 level
+    # So we will have 10 level of that sword with different stats
+    # You can increase by format config: [lower number]-[higher number]
+    # Highly recommend keep this from 1-10, if you have a mind to make higher number higher than 10
+    random_level: 1-10
+    # Name's for weapon
+    # Example mob have name: "&aZombie"
+    # So weapon will have name: "&aZombie &7[&f#level#&7]
+    # With #level# is from random-level
+    name: "#mm_name# &7[&f#level#&7]"
+    # Stats settings
+    stats:
+      # As I remember most of the stats in mmoitems is number and boolean
+      # So I spilt it to 2 settings
+      # For string_boolean is only for true/false stats
+      string_boolean:
+        unbreakable: true
+        disable-crafting: true
+        disable-smelting: true
+        disable-smithing: true
+        disable-enchanting: true
+        disable-repairing: true
+        disable-droping: true
+        disable-attack-passive: true
+      # For number is only for number stats
+      # stats.number can be calculator to give a number for that stats
+      # Not supported PlaceholderAPI
+      # Self placeholder explain:
+      # #mm_health# -> return mob's health
+      # #mm_damage# -> return mob's damage
+      # #mm_armor# -> return mob's armor
+      # #level# -> return random_level setting above
+      # After calculated, which number stats doesn't higher than 0
+      # Stats will be removed from weapon
+      number:
+        attack-damage: "#mm_health# / #level#"
+        critical-strike-chance: "#mm_damage# / ( #level# * 10 )"
+        critical-strike-power: "#mm_damage# / ( #level# * 20 )"
+        pve-damage: "#mm_armor# / ( #level# * 10 )"
+        pvp-damage: "#mm_armor# / ( #level# * 20 )"
+    # Type settings
+    type_settings:
+      # We have 2 option: random, list
+      # Lets me explain it:
+      # random: When generate item, we must have material for it.
+      # So random option will have you choose random material for it
+      # For example: When generate item, it's choose random and prefix is WOODEN
+      # and suffix is SHOVEL -> that's item will be had material is WOODEN_SHOVEL
+      # If prefix is BLAZE_ROD and suffix is SWORD -> unknown material so system
+      # will check prefix first, if prefix is material, system will take prefix
+      # as material -> that's item will be had material is BLAZE_ROD
+      # If material from prefix still unknown -> system will check suffix like the
+      # ways check prefix. If material suffix still unknown? It auto return to DIAMOND_SWORD
+      # Explain for list option will be explained below
+      option: random
+      prefix:
+        - WOODEN
+        - IRON
+        - GOLDEN
+        - DIAMOND
+        - NETHERITE
+        - BLAZE_ROD
+        - STICK
+        - BONE
+      suffix:
+        - AXE
+        - HOE
+        - SHOVEL
+        - SWORD
+    # If that's mob doesn't have a custom name
+    # Item will take a custom name from this setting
+    # to make a custom name for it
+    custom_name:
+      WOODEN: "&8Wooden"
+      IRON: "&7Wooden"
+      GOLDEN: "&eGold"
+      DIAMOND: "&bDiamond"
+      NETHERITE: "&dNetherite"
+      BLAZE_ROD: "&cBlaze Rod"
+      STICK: "&7Stick"
+      BONE: "&fBone"
+      AXE: "&fAxe"
+      HOE: "&fHoe"
+      SHOVEL: "&fShovel"
+      SWORD: "&fSword"
+  # MMOItems custom type
+  # We have known issue with this: This type will never show to /mi browse
+  # But you can open that gui by command /mi browse MYTHICSWORD
+  mythicarmor:
+    # Recommend keep all things below generator_custom_type
+    # You can change MythicSword to your new custom type name
+    # It just custom load type for generate item
+    generator_custom_type:
+      enable: true
+      display: DIAMOND_CHESTPLATE
+      name: MythicArmor
+      parent: ARMOR
+      unident-item:
+        name: "&f#prefix#Unidentified MythicArmor"
+        lore:
+          - '&7This item is unidentified. I must'
+          - '&7find a way to identify it!'
+          - '{tier}'
+          - '{tier}&8Item Info:'
+          - '{range}&8- &7Lvl Range: &e#range#'
+          - '{tier}&8- &7Item Tier: #prefix##tier#'
+    # Random level to load item
+    # For example: We will load sword for that mobs
+    # We will load from 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 level
+    # So we will have 10 level of that sword with different stats
+    # You can increase by format config: [lower number]-[higher number]
+    # Highly recommend keep this from 1-10, if you have a mind to make higher number higher than 10
+    random_level: 1-10
+    # Name's for weapon
+    # Example mob have name: "&aZombie"
+    # So weapon will have name: "&aZombie &7[&f#level#&7]
+    # With #level# is from random-level
+    name: "#mm_name# &7[&f#level#&7]"
+    stats:
+      # As I remember most of the stats in mmoitems is number and boolean
+      # So I spilt it to 2 settings
+      # For string_boolean is only for true/false stats
+      string_boolean:
+        unbreakable: true
+        disable-crafting: true
+        disable-smelting: true
+        disable-smithing: true
+        disable-enchanting: true
+        disable-repairing: true
+        disable-droping: true
+        disable-attack-passive: true
+      # For number is only for number stats
+      # stats.number can be calculator to give a number for that stats
+      # Not supported PlaceholderAPI
+      # Self placeholder explain:
+      # #mm_health# -> return mob's health
+      # #mm_damage# -> return mob's damage
+      # #mm_armor# -> return mob's armor
+      # #level# -> return random_level setting above
+      # After calculated, which number stats doesn't higher than 0
+      # Stats will be removed from weapon
+      number:
+        armor: "#mm_damage# / (#level# * 10)"
+        max-health: "#mm_health# / #level#"
+    # Type settings
+    type_settings:
+      # We have 2 option: random, list
+      # Lets me explain it:
+      # list: When generate item, we must have material for it.
+      # So list option will have you choose random material prefix + all suffix in list for it
+      # For example: When generate item, it's choose random and prefix are LEATHER, CHAINMAIL, DIAMOND, NETHERITE
+      # Because we have 4 suffix, so it will choose random 4 times
+      # -> We will have 4 items, material is: LEATHER_HELMET, CHAINMAIL_CHESTPLATE, DIAMOND_LEGGINGS, NETHERITE_BOOTS
+      option: list
+      # For example default name is "&aZombie Helmet"
+      # When set this to false, name is "&aHelmet Zombie"
+      prefix_to_suffix: true
+      prefix:
+        - LEATHER
+        - CHAINMAIL
+        - IRON
+        - GOLDEN
+        - DIAMOND
+        - NETHERITE
+      suffix:
+        - HELMET
+        - CHESTPLATE
+        - LEGGINGS
+        - BOOTS
+    # If that's mob doesn't have a custom name
+    # Item will take a custom name from this setting
+    # to make a custom name for it
+    custom_name:
+      LEATHER: "&8Leather"
+      CHAINMAIL: "&7Chainmail"
+      IRON: "&7Iron"
+      GOLDEN: "&eGold"
+      DIAMOND: "&bDiamond"
+      NETHERITE: "&dNetherite"
+      HELMET: "&aHelmet"
+      CHESTPLATE: "&aChestplate"
+      LEGGINGS: "&aLeggings"
+      BOOTS: "&aBoots"
