@@ -1,6 +1,7 @@
 package net.danh.mythitem;
 
 import net.danh.mythitem.Command.MythCMD;
+import net.danh.mythitem.Events.RecipeBook;
 import net.danh.mythitem.Item.GeneratorItem;
 import net.danh.mythitem.Item.GeneratorType;
 import net.danh.mythitem.Manager.File;
@@ -27,6 +28,7 @@ public final class MythItem extends JavaPlugin {
     @Override
     public void onEnable() {
         new MythCMD("mythitem");
+        getServer().getPluginManager().registerEvents(new RecipeBook(), mythItem);
         ForkJoinPool.commonPool().execute(() -> {
             GeneratorType.generator();
             if (File.getConfig().getBoolean("load_settings.load_all_mob_on_enable")) {

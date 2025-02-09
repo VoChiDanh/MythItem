@@ -8,10 +8,16 @@ load_settings:
   # After use that command, please don't edit anything in mmoitems's file or mythicmob's files until plugin say it done
   # Recommend load it when don't have so much player in server / or have 0 player is the best
   load_all_mob_on_enable: false
-# Plugin will take a mob's stats to load item for that mob. So if you want some mob needn't has weapon & armor
+# Plugin will take a mob's stats to load item for that mob
 # Put internal mob name below this list
-list_mobs_unload:
-  - MOB_NAME
+load_items:
+  list_mobs_load:
+    - ZOMBIE_1
+  integer_stats:
+    - attack-damage
+    - defense
+    - max-health
+    - custom-kynangdmg
 # Maybe every message will be here
 message:
   reload: "&aReloaded files"
@@ -50,7 +56,7 @@ type:
     # So we will have 10 level of that sword with different stats
     # You can increase by format config: [lower number]-[higher number]
     # Highly recommend keep this from 1-10, if you have a mind to make higher number higher than 10
-    random_level: 1-10
+    random_level: 1-9
     # Name's for weapon
     # Example mob have name: "&aZombie"
     # So weapon will have name: "&aZombie &7[&f#level#&7]
@@ -78,14 +84,38 @@ type:
       # #mm_damage# -> return mob's damage
       # #mm_armor# -> return mob's armor
       # #level# -> return random_level setting above
+      # #min_before# -> return min value before that level
+      # #max_before# -> return max value before that level
+      # #stats_min_<type>;<stats># -> return item stats of that type in the same level with item generate
+      # Note: This stats only work when that type loaded before your type need that type stats
       # After calculated, which number stats doesn't higher than 0
       # Stats will be removed from weapon
       number:
-        attack-damage: "#mm_health# / #level#"
-        critical-strike-chance: "#mm_damage# / ( #level# * 10 )"
-        critical-strike-power: "#mm_damage# / ( #level# * 20 )"
-        pve-damage: "#mm_armor# / ( #level# * 10 )"
-        pvp-damage: "#mm_armor# / ( #level# * 20 )"
+        attack-damage:
+          min_default: "#mm_health# * 0.1"
+          max_default: "#mm_health# * 0.2"
+          min: "#min_before# + (#mm_health# * 0.02)"
+          max: "#max_before# + (#mm_health# * 0.02)"
+        critical-strike-chance:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) * 0.01 + #mm_damage# * 0.005"
+          max: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) * 0.01 + #mm_damage# * 0.01"
+        critical-strike-power:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) / 2 * 0.02"
+          max: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) / 2 * 0.06"
+        pve-damage:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) / 2 * 0.002"
+          max: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) / 2 * 0.006"
+        custom-kynangdmg:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) / 4 * 0.1"
+          max: "(#stats_min_mythicsword;attack-damage# + #stats_max_mythicsword;attack-damage#) / 4 * 0.2"
     # Type settings
     type_settings:
       # We have 2 option: random, list
@@ -107,6 +137,125 @@ type:
         - GOLDEN
         - DIAMOND
         - NETHERITE
+      suffix:
+        - AXE
+        - SWORD
+    # If that's mob doesn't have a custom name
+    # Item will take a custom name from this setting
+    # to make a custom name for it
+    custom_name:
+      WOODEN: "&8Wooden"
+      IRON: "&7Wooden"
+      GOLDEN: "&eGold"
+      DIAMOND: "&bDiamond"
+      NETHERITE: "&dNetherite"
+      BLAZE_ROD: "&cBlaze Rod"
+      STICK: "&7Stick"
+      BONE: "&fBone"
+      AXE: "&fAxe"
+      HOE: "&fHoe"
+      SHOVEL: "&fShovel"
+      SWORD: "&fSword"
+  mythicwand:
+    # Recommend keep all things below generator_custom_type
+    # You can change MythicSword to your new custom type name
+    # It just custom load type for generate item
+    generator_custom_type:
+      enable: true
+      display: STICK
+      name: MythicWand
+      parent: STAFF
+      unident-item:
+        name: "&f#prefix#Unidentified MythicWand"
+        lore:
+          - '&7This item is unidentified. I must'
+          - '&7find a way to identify it!'
+          - '{tier}'
+          - '{tier}&8Item Info:'
+          - '{range}&8- &7Lvl Range: &e#range#'
+          - '{tier}&8- &7Item Tier: #prefix##tier#'
+    # Random level to load item
+    # For example: We will load sword for that mobs
+    # We will load from 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 level
+    # So we will have 10 level of that sword with different stats
+    # You can increase by format config: [lower number]-[higher number]
+    # Highly recommend keep this from 1-10, if you have a mind to make higher number higher than 10
+    random_level: 1-9
+    # Name's for weapon
+    # Example mob have name: "&aZombie"
+    # So weapon will have name: "&aZombie &7[&f#level#&7]
+    # With #level# is from random-level
+    name: "#mm_name# &7[&f#level#&7]"
+    # Stats settings
+    stats:
+      # As I remember most of the stats in mmoitems is number and boolean
+      # So I spilt it to 2 settings
+      # For string_boolean is only for true/false stats
+      string_boolean:
+        unbreakable: true
+        disable-crafting: true
+        disable-smelting: true
+        disable-smithing: true
+        disable-enchanting: true
+        disable-repairing: true
+        disable-droping: true
+        disable-attack-passive: true
+      # For number is only for number stats
+      # stats.number can be calculator to give a number for that stats
+      # Not supported PlaceholderAPI
+      # Self placeholder explain:
+      # #mm_health# -> return mob's health
+      # #mm_damage# -> return mob's damage
+      # #mm_armor# -> return mob's armor
+      # #level# -> return random_level setting above
+      # #min_before# -> return min value before that level
+      # #max_before# -> return max value before that level
+      # #stats_min_<type>;<stats># -> return item stats of that type in the same level with item generate
+      # Note: This stats only work when that type loaded before your type need that type stats
+      # After calculated, which number stats doesn't higher than 0
+      # Stats will be removed from weapon
+      number:
+        attack-damage:
+          min_default: "#mm_health# * 0.05"
+          max_default: "#mm_health# * 0.15"
+          min: "#min_before# + (#mm_health# * 0.01)"
+          max: "#max_before# + (#mm_health# * 0.01)"
+        critical-strike-chance:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) * 0.01 + #mm_damage# * 0.0025"
+          max: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) * 0.01 + #mm_damage# * 0.005"
+        critical-strike-power:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 * 0.02"
+          max: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 * 0.06"
+        pve-damage:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 * 0.006"
+          max: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 * 0.018"
+        custom-kynangdmg:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 * 0.2"
+          max: "(#stats_min_mythicwand;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2  * 0.4"
+    # Type settings
+    type_settings:
+      # We have 2 option: random, list
+      # Lets me explain it:
+      # random: When generate item, we must have material for it.
+      # So random option will have you choose random material for it
+      # For example: When generate item, it's choose random and prefix is WOODEN
+      # and suffix is SHOVEL -> that's item will be had material is WOODEN_SHOVEL
+      # If prefix is BLAZE_ROD and suffix is SWORD -> unknown material so system
+      # will check prefix first, if prefix is material, system will take prefix
+      # as material -> that's item will be had material is BLAZE_ROD
+      # If material from prefix still unknown -> system will check suffix like the
+      # ways check prefix. If material suffix still unknown? It auto return to DIAMOND_SWORD
+      # Explain for list option will be explained below
+      option: random
+      prefix:
         - BLAZE_ROD
         - STICK
         - BONE
@@ -158,7 +307,7 @@ type:
     # So we will have 10 level of that sword with different stats
     # You can increase by format config: [lower number]-[higher number]
     # Highly recommend keep this from 1-10, if you have a mind to make higher number higher than 10
-    random_level: 1-10
+    random_level: 1-9
     # Name's for weapon
     # Example mob have name: "&aZombie"
     # So weapon will have name: "&aZombie &7[&f#level#&7]
@@ -185,11 +334,23 @@ type:
       # #mm_damage# -> return mob's damage
       # #mm_armor# -> return mob's armor
       # #level# -> return random_level setting above
+      # #min_before# -> return min value before that level
+      # #max_before# -> return max value before that level
+      # #stats_min_<type>;<stats># -> return item stats of that type in the same level with item generate
+      # Note: This stats only work when that type loaded before your type need that type stats
       # After calculated, which number stats doesn't higher than 0
       # Stats will be removed from weapon
       number:
-        armor: "#mm_damage# / (#level# * 10)"
-        max-health: "#mm_health# / #level#"
+        max-health:
+          min_default: "0"
+          max_default: "0"
+          min: "(#stats_min_mythicsword;attack-damage# + #stats_min_mythicwand;attack-damage#) / 2 + #mm_damage# * 0.35"
+          max: "(#stats_max_mythicsword;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 + #mm_damage# * 0.7"
+        defense:
+          min_default: "0"
+          max_default: "0"
+          min: "((#stats_min_mythicsword;attack-damage# + #stats_min_mythicwand;attack-damage#) / 2 + #mm_damage#) * 0.01"
+          max: "((#stats_max_mythicsword;attack-damage# + #stats_max_mythicwand;attack-damage#) / 2 + #mm_damage#) * 0.01"
     # Type settings
     type_settings:
       # We have 2 option: random, list

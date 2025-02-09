@@ -33,7 +33,7 @@ public class MythCMD extends CMDBase {
                 if (args[0].equalsIgnoreCase("create")) {
                     ForkJoinPool.commonPool().execute(() -> {
                         GeneratorItem.generator(c);
-                        MMOItems.plugin.getTypes().reload();
+                        MMOItems.plugin.getTypes().reload(true);
                         MMOItems.plugin.getTemplates().reload();
                     });
                 }

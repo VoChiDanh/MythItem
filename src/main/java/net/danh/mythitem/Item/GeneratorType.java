@@ -27,6 +27,6 @@ public class GeneratorType {
                 }
             }
         }
-        MMOItems.plugin.getTypes().reload();
+        MMOItems.plugin.getTypes().reload(true);
     }
 }
