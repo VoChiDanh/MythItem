@@ -2,6 +2,7 @@ package net.danh.mythitem.Command;
 
 import net.Indyuce.mmoitems.MMOItems;
 import net.danh.mythitem.Item.GeneratorItem;
+import net.danh.mythitem.Item.GeneratorType;
 import net.danh.mythitem.Manager.File;
 import net.danh.mythitem.Utils.Chat;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,7 @@ public class MythCMD extends CMDBase {
                 if (args[0].equalsIgnoreCase("reload")) {
                     ForkJoinPool.commonPool().execute(() -> {
                         File.reloadFiles();
+                        GeneratorType.generator();
                         c.sendMessage(Chat.colorize(File.getConfig().getString("message.reload")));
                     });
                 }

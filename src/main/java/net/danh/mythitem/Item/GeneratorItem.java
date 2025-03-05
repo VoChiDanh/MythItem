@@ -288,18 +288,16 @@ public class GeneratorItem {
                                 MythItem.getMythItem().getLogger().log(Level.WARNING, "min_value: " + min_value);
                             if (File.isDebug())
                                 MythItem.getMythItem().getLogger().log(Level.WARNING, "max_value: " + max_value);
-                            if (Double.parseDouble(c_un_c_min) > 0 && Double.parseDouble(c_un_c_max) > 0) {
-                                config.getConfig().set("MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".min", min_value);
-                                config.getConfig().set("MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".max", max_value);
-                                min.put(stats + "_" + finalI, min_value);
-                                max.put(stats + "_" + finalI, max_value);
-                                stats_generate.put(type_name + "_" + stats + "_min_" + finalI, min_value);
-                                stats_generate.put(type_name + "_" + stats + "_max_" + finalI, max_value);
-                                if (File.isDebug())
-                                    MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".min: " + min_value);
-                                if (File.isDebug())
-                                    MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".max: " + max_value);
-                            }
+                            config.getConfig().set("MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".min", min_value);
+                            config.getConfig().set("MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".max", max_value);
+                            min.put(stats + "_" + finalI, min_value);
+                            max.put(stats + "_" + finalI, max_value);
+                            stats_generate.put(type_name + "_" + stats + "_min_" + finalI, min_value);
+                            stats_generate.put(type_name + "_" + stats + "_max_" + finalI, max_value);
+                            if (File.isDebug())
+                                MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".min: " + min_value);
+                            if (File.isDebug())
+                                MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + finalI + "_" + suffix + ".base." + stats + ".max: " + max_value);
                         }
                     }
                     config.save();
@@ -512,18 +510,16 @@ public class GeneratorItem {
                             MythItem.getMythItem().getLogger().log(Level.WARNING, "min_value: " + min_value);
                         if (File.isDebug())
                             MythItem.getMythItem().getLogger().log(Level.WARNING, "max_value: " + max_value);
-                        if (Double.parseDouble(c_un_c_min) > 0 && Double.parseDouble(c_un_c_max) > 0) {
-                            config.getConfig().set("MM_" + name + "_" + i + ".base." + stats + ".min", min_value);
-                            config.getConfig().set("MM_" + name + "_" + i + ".base." + stats + ".max", max_value);
-                            min.put(stats + "_" + i, min_value);
-                            max.put(stats + "_" + i, max_value);
-                            stats_generate.put(type_name + "_" + stats + "_min_" + i, min_value);
-                            stats_generate.put(type_name + "_" + stats + "_max_" + i, max_value);
-                            if (File.isDebug())
-                                MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + i + ".base." + stats + ".min: " + min_value);
-                            if (File.isDebug())
-                                MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + i + ".base." + stats + ".max: " + max_value);
-                        }
+                        config.getConfig().set("MM_" + name + "_" + i + ".base." + stats + ".min", min_value);
+                        config.getConfig().set("MM_" + name + "_" + i + ".base." + stats + ".max", max_value);
+                        min.put(stats + "_" + i, min_value);
+                        max.put(stats + "_" + i, max_value);
+                        stats_generate.put(type_name + "_" + stats + "_min_" + i, min_value);
+                        stats_generate.put(type_name + "_" + stats + "_max_" + i, max_value);
+                        if (File.isDebug())
+                            MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + i + ".base." + stats + ".min: " + min_value);
+                        if (File.isDebug())
+                            MythItem.getMythItem().getLogger().log(Level.WARNING, "MM_" + name + "_" + i + ".base." + stats + ".max: " + max_value);
                     }
                 }
                 config.save();
